@@ -1,6 +1,5 @@
 import 'dotenv/config';
-import fs from 'fs';
-// import path from 'path';
+import fs from 'fs/promises';
 import  OpenAI  from 'openai';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -11,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 // Define paths
 const outputDir = path.join(__dirname, 'images');
-const sourceImage = path.join(__dirname, 'main.png');
+const sourceImage = path.resolve(__dirname, '..', 'main.png');
 console.log(outputDir);
 console.log(sourceImage);
 
@@ -43,11 +42,16 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// check if output directory exists, if not create it
+await fs.mkdir(outputDir, { recursive: true });  
 
-// async function ensureOutputDir() {
-//   await fs.mkdir(outPutDir, { recursive: true });
-// }
-// console.log(ensureOutputDir());
+// check if source image exists
+try {
+  await fs.access(sourceImage);
+} catch {
+  console.error('❌ main.png introuvable :', sourceImage);
+}
+
 
 // const response = await openai.responses.create({
 //   model: "gpt-5",
