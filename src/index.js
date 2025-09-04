@@ -46,10 +46,12 @@ const openai = new OpenAI({
 await fs.mkdir(outputDir, { recursive: true });  
 
 // check if source image exists
+async function assertSourceImage() {
 try {
   await fs.access(sourceImage);
 } catch {
   console.error('❌ main.png introuvable :', sourceImage);
+}
 }
 
 
