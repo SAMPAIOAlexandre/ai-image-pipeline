@@ -1,5 +1,5 @@
 import 'dotenv/config';
-// import fs from 'fs';
+import fs from 'fs';
 // import path from 'path';
 import  OpenAI  from 'openai';
 import path from 'path';
@@ -10,10 +10,10 @@ const __filename  = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Define paths
-const outPutDir = path.join(__dirname, 'images');
-const source_images = path.join(__dirname, 'main.png');
-console.log(outPutDir);
-console.log(source_images);
+const outputDir = path.join(__dirname, 'images');
+const sourceImage = path.join(__dirname, 'main.png');
+console.log(outputDir);
+console.log(sourceImage);
 
 const scenes = [
   "Ce mec, c'est le boss de la tech.",
@@ -42,6 +42,12 @@ function buildPrompt(sceneText) {
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+
+// async function ensureOutputDir() {
+//   await fs.mkdir(outPutDir, { recursive: true });
+// }
+// console.log(ensureOutputDir());
 
 // const response = await openai.responses.create({
 //   model: "gpt-5",
