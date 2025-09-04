@@ -12,19 +12,42 @@ const __dirname = path.dirname(__filename);
 // Define paths
 const outPutDir = path.join(__dirname, 'images');
 const source_images = path.join(__dirname, 'main.png');
+console.log(outPutDir);
+console.log(source_images);
 
+const scenes = [
+  "Ce mec, c'est le boss de la tech.",
+  "Il a révolutionné l'industrie avec ses idées innovantes.",
+  "Toujours à la pointe de la technologie, il inspire toute une génération.",
+  "Son influence s'étend bien au-delà de la Silicon Valley.",
+  "Un véritable visionnaire, il façonne l'avenir avec passion et détermination."
+]
 
+function buildPrompt(sceneText) {
+  return (`
+    You are generating an image for a specific scene of a story about:
+    Steve Jobs, an American businessman, inventor, and investor best known for co-founding the technology company Apple Inc.
+    Each image must be in an old school, serious, dark, and epic anime style.
+    Use the main character of the image only when necessary, otherwise create a scene with objects, backgrounds, texts, or anything relevant to the scene in the overall story.
+    Use objects, landscapes, portraits, and other elements to create a rich and detailed image depending on the scene.
+    Use text only if the scene requires it.
+
+    Scene: ${sceneText}
+    `.trim());
+  }
+  
+  // console.log(buildPrompt(scenes[0]));
 
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const response = await openai.responses.create({
-  model: "gpt-5",
-  input: "Write a short bedtime story about a unicorn.",
-});
+// const response = await openai.responses.create({
+//   model: "gpt-5",
+//   input: "Write a short bedtime story about a unicorn.",
+// });
 
-console.log(response.output_text);
+// console.log(response.output_text);
 
 
