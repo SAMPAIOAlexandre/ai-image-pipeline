@@ -1,4 +1,3 @@
-import { create } from 'domain';
 import 'dotenv/config';
 import { createReadStream } from 'fs';
 import fs from 'fs/promises';
