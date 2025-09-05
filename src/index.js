@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { createReadStream } from 'fs';
 import fs from 'fs/promises';
 import  OpenAI  from 'openai';
+import { toFile } from 'openai/uploads';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -46,6 +47,8 @@ const openai = new OpenAI({
 // check if output directory exists, if not create it
 await fs.mkdir(outputDir, { recursive: true });  
 
+await assertSourceImage();
+
 // check if source image exists
 async function assertSourceImage() {
 try {
@@ -56,6 +59,13 @@ try {
 }
 
 
+
+const bytes = await fs.readFile(sourceImage);
+
+const imageFile = await toFile(bytes, 'main.png', { type: 'image/png' });
+
+
+
 async function generateImage(scene, index) {
   const prompt = buildPrompt(scene);
   const i = index + 1; // unique file per scene 
@@ -63,14 +73,18 @@ async function generateImage(scene, index) {
 
   const res = await openai.images.edit({
     model: 'gpt-image-1',
-    image: createReadStream(sourceImage),
+    image: imageFile,
     prompt,
     size,
   });
 
+  console.timeEnd(`API images.edit #${index + 1}`);
+  console.log('   api result items:', Array.isArray(res.data) ? res.data.length : 0);
+
 
   // recover b64_json from response
   const b64 = res.data?.[0]?.b64_json;
+  console.log('   b64 length:', b64?.length ?? 0);
   // if b64 is undefined, throw error
   if (!b64) throw new Error('No b64_json in response');
 
@@ -80,12 +94,20 @@ async function generateImage(scene, index) {
   const filename = path.join(outputDir, `image-${index + 1}.png`);
   // write buffer to file in async
   await fs.writeFile(filename, buffer);
+  console.log(`✅ saved → ${filename} (${buffer.byteLength} bytes)`);
+
 
 
   return { ok: true, file: filename, size };
 
 }
 
+try {
+  const res1 = await generateImage(scenes[0], 0);
+  console.log('SUMMARY:', res1);
+} catch (e) {
+  console.error('❌ generation failed:', e?.message || e);
+}
 
 
 
