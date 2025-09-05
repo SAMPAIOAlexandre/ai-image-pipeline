@@ -1,5 +1,6 @@
 import { create } from 'domain';
 import 'dotenv/config';
+import { createReadStream } from 'fs';
 import fs from 'fs/promises';
 import  OpenAI  from 'openai';
 import path from 'path';
@@ -63,7 +64,7 @@ async function generateImage(scene, index) {
 
   const res = await openai.images.edit({
     model: 'gpt-image-1',
-    image : createReadStream(sourceImage),
+    image: createReadStream(sourceImage),
     prompt,
     size,
   });
