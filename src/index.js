@@ -1,3 +1,4 @@
+import { create } from 'domain';
 import 'dotenv/config';
 import fs from 'fs/promises';
 import  OpenAI  from 'openai';
@@ -53,6 +54,28 @@ try {
   console.error('❌ main.png introuvable :', sourceImage);
 }
 }
+
+
+async function generateImage(scene, index) {
+  const prompt = buildPrompt(scene);
+  const i = index + 1; // unique file per scene 
+  const size = "1024x1536";
+
+  const res = await openai.images.generate({
+    model: 'gpt-image-1',
+    image : createReadStream(sourceImage),
+    prompt,
+    size,
+  });
+
+
+  // recover b64_json from response
+  const b64 = res.data[0].b64_json;
+  // if b64 is undefined, throw error
+  if (!b64) throw new Error('No b64_json in response');
+
+
+
 
 
 // const response = await openai.responses.create({
