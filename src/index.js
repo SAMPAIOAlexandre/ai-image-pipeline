@@ -61,7 +61,7 @@ async function generateImage(scene, index) {
   const i = index + 1; // unique file per scene 
   const size = "1024x1536";
 
-  const res = await openai.images.generate({
+  const res = await openai.images.edit({
     model: 'gpt-image-1',
     image : createReadStream(sourceImage),
     prompt,
@@ -70,10 +70,21 @@ async function generateImage(scene, index) {
 
 
   // recover b64_json from response
-  const b64 = res.data[0].b64_json;
+  const b64 = res.data?.[0]?.b64_json;
   // if b64 is undefined, throw error
   if (!b64) throw new Error('No b64_json in response');
 
+  // convert b64 to buffer and write to file
+  const buffer = Buffer.from(b64, 'base64');
+  // construct filename with unique name
+  const filename = path.join(outputDir, `image-${index + 1}.png`);
+  // write buffer to file in async
+  await fs.writeFile(filename, buffer);
+
+
+  return { ok: true, file: filename, size };
+
+}
 
 
 
