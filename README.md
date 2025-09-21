@@ -13,3 +13,10 @@ Generate consistent images from a base image.
 Control each scene using custom prompts.
 
 Export ready-to-edit assets for video creation.
+
+
+### Configuration 
+
+Requires an .env file with your OpenAI API key.
+
+You can duplicate and rename .env.example to get started.
