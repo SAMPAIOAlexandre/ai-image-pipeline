@@ -20,3 +20,16 @@ Export ready-to-edit assets for video creation.
 Requires an .env file with your OpenAI API key.
 
 You can duplicate and rename .env.example to get started.
+
+
+### How to Use
+
+Add your OpenAI key to .env
+
+Place main.png in the root directory
+
+Edit the scene prompts list
+
+Run the script: node index.js
+
+Find your generated images in /images
