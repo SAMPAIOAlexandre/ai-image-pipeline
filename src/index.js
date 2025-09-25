@@ -21,7 +21,8 @@ const scenes = [
   "Il a révolutionné l'industrie avec ses idées innovantes.",
   "Toujours à la pointe de la technologie, il inspire toute une génération.",
   "Son influence s'étend bien au-delà de la Silicon Valley.",
-  "Un véritable visionnaire, il façonne l'avenir avec passion et détermination."
+  "Un véritable visionnaire, il façonne l'avenir avec passion et détermination.",
+  "Il a transformé la manière dont nous interagissons avec la technologie au quotidien.",
 ]
 
 function buildPrompt(sceneText) {
